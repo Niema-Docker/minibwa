@@ -1,15 +1,12 @@
 # Minimal Docker image for minibwa using Alpine base
-FROM alpine:3.13.5
-MAINTAINER Niema Moshiri <niemamoshiri@gmail.com>
+FROM alpine:latest
 
 # install minibwa
 RUN apk update && \
-    apk add bash gcc make musl-dev unzip zlib-dev && \
-    wget "https://github.com/lh3/minibwa/archive/refs/heads/master.zip" && \
-    unzip master.zip && \
+    apk add --no-cache bash gcc make musl-dev zlib-dev && \
+    wget -qO- "https://github.com/lh3/minibwa/archive/refs/tags/v0.7.tar.gz" | tar -zx && \
     cd minibwa-* && \
     make && \
-    chmod a+x minibwa && \
-    mv minibwa /usr/local/bin/minibwa && \
+    mv minibwa /usr/local/bin/ && \
     cd .. && \
-    rm -rf master.zip minibwa-*
+    rm -rf minibwa-*
